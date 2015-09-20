@@ -87,9 +87,9 @@
                  <span class="n">species</span> <span class="p">:</span> <span class="s">"H. sapiens"</span><span class="p">,</span>
                  <span class="n">age</span> <span class="p">:</span> <span class="mi">23</span><span class="p">)</span>
 
-<span class="n">assert</span> <span class="ow">not</span> <span class="n">carl</span><span class="p">.</span><span class="n">dead</span>
+<span class="n">assert</span> (<span class="ow">not</span> <span class="n">carl</span><span class="p">.</span><span class="n">dead</span>)
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="mf">0</span><span class="p">..</span><span class="mi">10</span><span class="p">:</span>
-  <span class="n">carl</span><span class="p">.</span><span class="n">sleep</span><span class="p">()</span>
+  # <span class="n">carl</span><span class="p">.</span><span class="n">sleep</span><span class="p">()</span> # that's an error: type mismatch: got (ref Animal) but expected one of: object_types.sleep(a: var Animal)
 <span class="n">assert</span> <span class="n">carl</span><span class="p">.</span><span class="n">dead</span></code></pre>
 
 <p>Object types are declared in a type section, as usual. They can be exported, and individual fields can also be exported. Fields can be safely exported without violating encapsulation because call syntax is equivalent between them.</p>
