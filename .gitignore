@@ -1,9 +1,0 @@
-!*.md
-nohup.out
-output/
-tmp/
-crash.log
-*.sublime-workspace
-nimcache/
-testexamples
-testexamples.exe
