@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - JSON</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="json">JSON</h1>
+
+<p>Nim’s <code>json</code> module allows you to work with JSON data.</p>
+
+<h2 id="converting-data-into-json">Converting Data Into JSON</h2>
+
+<p>The <code>json</code> module provides the <code>%*</code> operator which is used to create JSON objects. Note the use of the <code>$</code> operator to convert the JsonObject to its string representation.</p>
+
+<pre><code class="language-nimrod"><span class="kn">import</span> <span class="n">json</span>
+
+<span class="k">let</span> <span class="n">element</span> <span class="o">=</span> <span class="s">"Hydrogen"</span>
+<span class="k">let</span> <span class="n">atomicNumber</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">let</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="o">%*</span> <span class="p">{</span><span class="s">"element"</span><span class="p">:</span> <span class="n">element</span><span class="p">,</span> <span class="s">"atomicNumber"</span><span class="p">:</span> <span class="n">atomicNumber</span><span class="p">}</span>
+<span class="c"># This will print {"element":"Hydrogen", "atomicNumber": 1}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">jsonObject</span></code></pre>
+
+<h2 id="parsing-and-accessing-json">Parsing and accessing JSON</h2>
+
+<pre><code class="language-nimrod"><span class="kn">import</span> <span class="n">json</span>
+
+<span class="c"># We start with a string representation of a JSON object</span>
+<span class="k">let</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="s">"""{"name": "Sky", "age": 32}"""</span>
+<span class="k">let</span> <span class="n">jsonArray</span> <span class="o">=</span> <span class="s">"""[7, 8, 9]"""</span>
+
+<span class="k">let</span> <span class="n">parsedObject</span> <span class="o">=</span> <span class="n">parseJson</span><span class="p">(</span><span class="n">jsonObject</span><span class="p">)</span>
+<span class="k">let</span> <span class="n">name</span> <span class="o">=</span> <span class="n">parsedObject</span><span class="o">[</span><span class="s">"name"</span><span class="o">]</span><span class="p">.</span><span class="n">getStr</span><span class="p">()</span>
+<span class="c"># This will print Sky</span>
+<span class="n">echo</span> <span class="n">name</span>
+
+<span class="k">let</span> <span class="n">parsedArray</span> <span class="o">=</span> <span class="n">parseJson</span><span class="p">(</span><span class="n">jsonArray</span><span class="p">)</span>
+<span class="k">let</span> <span class="n">eight</span> <span class="o">=</span> <span class="n">parsedArray</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">.</span><span class="n">getInt</span><span class="p">()</span>
+<span class="c"># This will print 8</span>
+<span class="n">echo</span> <span class="n">eight</span></code></pre>
+
+<p>The <code>parseJson</code> method takes in a string representing a JSON object or array and transforms it into a <code>JsonNode</code>. We can access the fields of a JsonNode object using the <code>[]</code> syntax.</p>
+
+<p>The procs <code>getInt</code>, <code>getFloat</code>, <code>getStr</code> and <code>getBool</code> are used for converting JsonNode’s into Nim data types.</p>
+
+<h2 id="parsing-json-into-a-nim-object">Parsing JSON into a Nim Object</h2>
+
+<p>In some cases you may want to convert from a JSON string directly to an object.</p>
+
+<pre><code class="language-nimrod"><span class="kn">import</span> <span class="n">json</span>
+
+<span class="c"># First we'll define our types</span>
+<span class="k">type</span>
+  <span class="n">Element</span> <span class="o">=</span> <span class="k">object</span>
+    <span class="n">name</span><span class="p">:</span> <span class="kt">string</span>
+    <span class="n">atomicNumber</span><span class="p">:</span> <span class="kt">int</span>
+
+
+<span class="c"># Let's say this is the JSON we want to convert</span>
+<span class="k">let</span> <span class="n">jsonObject</span> <span class="o">=</span> <span class="n">parseJson</span><span class="p">(</span><span class="s">"""{"name": "Carbon", "atomicNumber": 6}"""</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="n">element</span> <span class="o">=</span> <span class="n">to</span><span class="p">(</span><span class="n">jsonObject</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span>
+<span class="c"># This will print Carbon</span>
+<span class="n">echo</span> <span class="n">element</span><span class="p">.</span><span class="n">name</span>
+<span class="c"># This will print 6</span>
+<span class="n">echo</span> <span class="n">element</span><span class="p">.</span><span class="n">atomicNumber</span></code></pre>
+
+<p>See the <a href="https://nim-lang.org/docs/json.html">json module documentation</a> for more information.</p>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Hello World</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="hello-world">Hello World</h1>
+
+<p>The code for a simple hello world program is as follows:</p>
+
+<pre><code class="language-nimrod"><span class="n">echo</span> <span class="s">"Hello World"</span></code></pre>
+
+<p>Save this text as <code>helloworld.nim</code>. To compile and execute the program, the following command should be run</p>
+
+<pre><code class="language-console"><span class="gp">$</span> nim c -r --verbosity:0 helloworld.nim
+<span class="go">Hello World</span></code></pre>
+
+<p>The command has several elements:</p>
+
+<ul>
+  <li>
+<code>c</code> is an alias for <code>compile</code>, which compiles the Nim sources into C and then invokes the C compiler on them</li>
+  <li>
+<code>-r</code> is an alias for <code>--run</code>, which runs the program</li>
+  <li>
+<code>--verbosity:0</code> makes the compiler only output essential messages, since by default it also outputs some debugging messages. From now on, we assume that <code>--verbosity:0</code> is set</li>
+  <li>
+<code>./helloworld.nim</code> is the path to the source you want to compile</li>
+</ul>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

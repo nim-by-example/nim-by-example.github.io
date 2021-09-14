@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Distinct Types</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="distinct-types">Distinct Types</h1>
+
+<p>Distinct types are like other type aliases, but they provide type safety so that it is impossible to coerce a distinct type into its base type without explicit conversion.</p>
+
+<pre><code class="language-nimrod"><span class="k">type</span>
+  <span class="n">Dollars</span><span class="o">*</span> <span class="o">=</span> <span class="k">distinct</span> <span class="kt">float</span>
+
+<span class="kd">var</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">20.</span><span class="n">Dollars</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">25</span>  <span class="c"># Doesn't compile</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">25.</span><span class="n">Dollars</span>  <span class="c"># Works fine</span></code></pre>
+
+<p>However, when using distinct types, none of the base type’s procedures follow the type. To solve this, it is possible to create lots of procedures that basically act as a thin wrapper for the underlying types, or the <code>{.borrow.}</code> pragma can be used to automate generation of procedures.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">`*`</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Dollars</span><span class="p">):</span> <span class="n">Dollars</span> <span class="p">{.</span><span class="n">borrow</span><span class="p">.}</span>
+<span class="k">proc </span><span class="nf">`+`</span> <span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Dollars</span><span class="p">):</span> <span class="n">Dollars</span> <span class="p">{.</span><span class="n">borrow</span><span class="p">.}</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mf">20.</span><span class="n">Dollars</span> <span class="o">*</span> <span class="mf">20.</span><span class="n">Dollars</span></code></pre>
+
+<p>When creating a distinct type from an object type, none of its fields are carried over. If the fields are wanted, they can be brought over through an overloading of the <code>{.borrow.}</code> pragma. If they are not borrowed, they cannot be accessed.</p>
+
+<pre><code class="language-nimrod"><span class="k">type</span>
+  <span class="n">Foo</span> <span class="o">=</span> <span class="k">object</span>
+    <span class="n">a</span><span class="p">:</span> <span class="kt">int</span>
+  <span class="n">MyFoo</span> <span class="p">{.</span><span class="n">borrow</span><span class="p">:</span> <span class="p">`.`.}</span> <span class="o">=</span> <span class="k">distinct</span> <span class="n">Foo</span>
+
+<span class="kd">var</span> <span class="n">value</span><span class="p">:</span> <span class="n">MyFoo</span>
+<span class="n">echo</span> <span class="n">value</span><span class="p">.</span><span class="n">a</span>  <span class="c"># Works</span></code></pre>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

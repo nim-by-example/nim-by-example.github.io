@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Variables</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="variables">Variables</h1>
+
+<p>Nim supports three different types of variables, <code>let</code>, <code>var</code>, and <code>const</code>. As with most things, multiple variables can be declared in the same section.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">getAlphabet</span><span class="p">():</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="kd">var</span> <span class="n">accm</span> <span class="o">=</span> <span class="s">""</span>
+  <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="sc">'a'</span><span class="p">..</span><span class="sc">'z'</span><span class="p">:</span>  <span class="c"># see iterators</span>
+    <span class="n">accm</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">accm</span>
+
+<span class="c"># Computed at compilation time</span>
+<span class="k">const</span> <span class="n">alphabet</span> <span class="o">=</span> <span class="n">getAlphabet</span><span class="p">()</span>
+
+<span class="c"># Mutable variables</span>
+<span class="kd">var</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="s">"foo"</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="c"># Works fine, initialized to 0</span>
+  <span class="n">c</span><span class="p">:</span> <span class="kt">int</span>
+
+<span class="c"># Immutable variables</span>
+<span class="k">let</span>
+  <span class="n">d</span> <span class="o">=</span> <span class="s">"foo"</span>
+  <span class="n">e</span> <span class="o">=</span> <span class="mi">5</span>
+  <span class="c"># Compile-time error, must be initialized at creation</span>
+  <span class="n">f</span><span class="p">:</span> <span class="kt">float</span>
+
+<span class="c"># Works fine, `a` is mutable</span>
+<span class="n">a</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"bar"</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c"># Compile-time error, const cannot be modified at run-time</span>
+<span class="n">alphabet</span> <span class="o">=</span> <span class="s">"abc"</span>
+
+<span class="c"># Compile-time error, `d` and `e` are immutable</span>
+<span class="n">d</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"bar"</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">+=</span> <span class="mi">1</span></code></pre>
+
+<pre><code class="language-console"><span class="gp">$</span> nim c --verbosity:2 ./variables.nim
+<span class="go">variables.nim(22, 2) Error: 'let' symbol requires an initialization</span>
+<span class="go">    f: float</span>
+<span class="go">    ^</span></code></pre>
+
+<p>Without <code>--verbosity:2</code> only the error will be shown without the position cursor.</p>
+
+<h2 id="const">Const</h2>
+<p>A <code>const</code> variable’s value will be evaluated at compile-time, so if you inspect the C sources, you’ll see the following line:</p>
+
+<pre><code class="language-c"><span class="n">STRING_LITERAL</span><span class="p">(</span><span class="n">TMP129</span><span class="p">,</span> <span class="s">"abcdefghijklmnopqrstuvwxyz"</span><span class="p">,</span> <span class="mi">26</span><span class="p">);</span></code></pre>
+
+<p>The only limitation with const is that compile-time evaluation cannot interface with C because there is no compile-time foreign function interface at this time.</p>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

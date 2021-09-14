@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Procs</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="procs">Procs</h1>
+
+<p>Procedures in Nim are declared using <code>proc</code> and require that their parameter and return types be annotated. After the types and parameters, an <code>=</code> is used to denote the start of the function body. Another thing to note is that procedures have uniform function call syntax, which means that they can called as both <code>foo(a, b)</code> or <code>a.foo(b)</code>.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">fibonacci</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="kt">int</span><span class="p">):</span> <span class="kt">int</span> <span class="o">=</span>
+  <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">n</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">).</span><span class="n">fibonacci</span></code></pre>
+
+<h2 id="exporting-symbols">Exporting symbols</h2>
+
+<!-- XXX Move into module topic -->
+<p>Encapsulation is also supported, not by conventions such as prepending the name with underscores but by annotating a procedure with <code>*</code>, which exports it and makes it available for use by modules.</p>
+
+<pre><code class="language-nimrod"><span class="c"># module1:</span>
+<span class="k">proc </span><span class="nf">foo</span><span class="o">*</span><span class="p">():</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="k">proc </span><span class="nf">bar</span><span class="p">():</span> <span class="kt">int</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c"># module2:</span>
+<span class="n">echo</span> <span class="n">foo</span><span class="p">()</span>  <span class="c"># Valid</span>
+<span class="n">echo</span> <span class="n">bar</span><span class="p">()</span>  <span class="c"># will not compile</span></code></pre>
+
+<h2 id="side-effect-analyses">Side effect analyses</h2>
+
+<p>Nim provides support for functional programming and so includes the <code>{.noSideEffect.}</code> pragma, which statically ensures there are no side effects.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="kt">int</span><span class="p">):</span> <span class="kt">int</span> <span class="p">{.</span> <span class="n">noSideEffect</span> <span class="p">.}</span> <span class="o">=</span>
+  <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="k">proc </span><span class="nf">minus</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="kt">int</span><span class="p">):</span> <span class="kt">int</span> <span class="p">{.</span> <span class="n">noSideEffect</span> <span class="p">.}</span> <span class="o">=</span>
+  <span class="n">echo</span> <span class="n">x</span>  <span class="c"># error: 'minus' can have side effects</span>
+  <span class="n">x</span> <span class="o">-</span> <span class="n">y</span></code></pre>
+
+<h2 id="operators">Operators</h2>
+
+<p>To create an operator, the symbols that are to be used must be encased inside <code>`</code>s to signify they are operators.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">`$`</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="kt">array</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="kt">array</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="kt">int</span><span class="o">]]</span><span class="p">):</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="s">""</span>
+  <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">vx</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+      <span class="n">result</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="o">$</span><span class="n">vx</span> <span class="o">&amp;</span> <span class="s">", "</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+
+<span class="n">echo</span><span class="p">(</span><span class="o">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span><span class="p">,</span> <span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="o">]]</span><span class="p">)</span>  <span class="c"># See varargs for</span>
+                        <span class="c"># how echo works</span>
+
+<span class="k">proc </span><span class="nf">`^&amp;*^@%`</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="kt">string</span><span class="p">):</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="sd">## A confusingly named useless operator</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">&amp;</span> <span class="n">b</span><span class="o">[</span><span class="n">high</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">]</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="s">"foo"</span> <span class="p">^</span><span class="o">&amp;*</span><span class="p">^</span><span class="o">@%</span> <span class="s">"bar"</span> <span class="o">==</span> <span class="s">"fr"</span><span class="p">)</span></code></pre>
+
+<h2 id="generic-functions">Generic Functions</h2>
+
+<!-- XXX Needs own section -->
+<p>Generic functions are like C++’s templates and allow for the same statically checked duck-typing semantics as templates.</p>
+
+<pre><code class="language-nimrod"><span class="c"># Not really good idea for obvious reasons</span>
+<span class="k">let</span> <span class="n">zero</span> <span class="o">=</span> <span class="s">""</span>
+<span class="k">proc </span><span class="nf">`+`</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="kt">string</span><span class="p">):</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="n">a</span> <span class="o">&amp;</span> <span class="n">b</span>
+
+<span class="k">proc </span><span class="nf">`*`</span><span class="o">[</span><span class="n">T</span><span class="o">]</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="kt">int</span><span class="p">):</span> <span class="n">T</span> <span class="o">=</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">zero</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="mf">0</span><span class="p">..</span><span class="n">b</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="n">a</span>  <span class="c"># calls `+` from line 3</span>
+
+<span class="n">assert</span><span class="p">(</span><span class="s">"a"</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">==</span> <span class="s">"aaaaaaaaaa"</span><span class="p">)</span></code></pre>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

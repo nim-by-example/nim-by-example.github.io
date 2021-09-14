@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Bitsets</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="bitsets">Bitsets</h1>
+
+<p>Nim comes with a built in way to build a set of ordinal types. In order for a type to be usable in a bitset, it must be an ordinal and «\texttt{high(T)} &lt; 2^{16}». For sets of non-ordinal types, see the <a href="http://nim-lang.org/docs/sets.html">sets module</a>, which contains hashsets.</p>
+
+<p>However, best practice is to keep bitset size significantly smaller since each possible element in the set consumes one bit, therefore a bitset of «2^{16}» elements will consume 64KiB.</p>
+
+<p>Bitsets have all the useful operations of mathematical sets:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operator</th>
+      <th>Description</th>
+      <th>Example Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>a in B</code></td>
+      <td>is a an element of B?</td>
+      <td><code>'d' in {'a'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>a notin B</code></td>
+      <td>is a not an element of B?</td>
+      <td><code>40 notin {2..20} </code></td>
+    </tr>
+    <tr>
+      <td><code>A + B</code></td>
+      <td>union of A with B</td>
+      <td><code>{'a'..'m'} + {'n'..'z'} == {'a'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A - B</code></td>
+      <td>relative complement of A in B</td>
+      <td><code>{'a'..'z'} - {'b'..'d'} == {'a', 'e'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A + {b}</code></td>
+      <td>add element b to set A</td>
+      <td><code>{'b'..'z'} + {'a'} == {'a'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A - {b}</code></td>
+      <td>remove element b from set A</td>
+      <td><code>{'a'..'z'} - {'a'} == {'b'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A * B</code></td>
+      <td>intersection of A with B</td>
+      <td><code>{'a'..'m'} * {'c'..'z'} == {'c'..'m'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A &lt;= B</code></td>
+      <td>is A a subset of B?</td>
+      <td><code>{'a'..'c'} &lt;= {'a'..'z'}</code></td>
+    </tr>
+    <tr>
+      <td><code>A &lt; B</code></td>
+      <td>is A a strict subset of B?</td>
+      <td><code>{'b'..'c'} &lt; {'a'..'z'}</code></td>
+    </tr>
+  </tbody>
+</table>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

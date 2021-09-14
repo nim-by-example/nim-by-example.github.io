@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Seqs</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="seqs">Seqs</h1>
+
+<p>Seqs, abbreviated from “sequence”, provide dynamically expandable storage.</p>
+
+<p>There are two ways to create seqs, with the <code>@</code> operator and with the <code>newSeq[T](n: int)</code> method. Once a seq is created, it can be modified using the <code>add(item: T)</code>, <code>delete(idx: int)</code>. The length of a seq can be found through <code>len: int</code>, and the maximum index through <code>high: int</code>. The standard <code>items: T</code> and <code>pairs: tuple[i: int, v: T]</code> iterators are also available.</p>
+
+<pre><code class="language-nimrod"><span class="kd">var</span>
+  <span class="n">a</span> <span class="o">=</span> <span class="o">@[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">newSeq</span><span class="o">[</span><span class="kt">int</span><span class="o">]</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+  <span class="n">b</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">v</span><span class="o">*</span><span class="n">v</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="mf">4</span><span class="p">..</span><span class="mi">100</span><span class="p">:</span>
+  <span class="n">b</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">i</span><span class="p">)</span>
+
+<span class="n">b</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c"># takes O(n) time</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">&amp;</span> <span class="n">b</span>  <span class="c"># Same as original b</span></code></pre>
+
+<h2 id="immutability">Immutability</h2>
+
+<p>Sequences are dynamically allocated (i.e. allocated on the heap, not the stack), but they are immutable unless marked as <code>var</code>. That means</p>
+
+<pre><code class="language-nimrod"><span class="k">let</span> <span class="n">a</span> <span class="o">=</span> <span class="o">@[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+<span class="n">a</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></code></pre>
+
+<p>will fail to compile because <code>a</code> cannot be assigned to. However,</p>
+
+<pre><code class="language-nimrod"><span class="kd">var</span> <span class="n">b</span> <span class="o">=</span> <span class="o">@[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+<span class="n">b</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span></code></pre>
+
+<p>will work without any problems. Sequences passed as “argument by value” are not modifiable. For example, the following will fail to compile.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">doSomething</span><span class="p">(</span><span class="n">mySeq</span><span class="p">:</span> <span class="kt">seq</span><span class="o">[</span><span class="kt">int</span><span class="o">]</span><span class="p">)</span> <span class="o">=</span>
+  <span class="n">mySeq</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c"># this is a compile-time error</span>
+<span class="kd">var</span> <span class="n">testSeq</span> <span class="o">=</span> <span class="o">@[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+<span class="n">doSomething</span><span class="p">(</span><span class="n">testSeq</span><span class="p">)</span></code></pre>
+
+<p><code>seq</code> arguments can be mutable if they are passed as “argument by reference”, ie. the parameter is annotated with the <code>var</code> or <code>ref</code>:</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">foo</span><span class="p">(</span><span class="n">mySeq</span><span class="p">:</span> <span class="kd">var</span> <span class="kt">seq</span><span class="o">[</span><span class="kt">int</span><span class="o">]</span><span class="p">)</span> <span class="o">=</span>
+  <span class="n">mySeq</span><span class="o">[</span><span class="mi">9</span><span class="o">]</span> <span class="o">=</span> <span class="mi">999</span>
+
+<span class="kd">var</span> <span class="n">thisSeq</span> <span class="o">=</span> <span class="n">newSeq</span><span class="o">[</span><span class="kt">int</span><span class="o">]</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">foo</span><span class="p">(</span><span class="n">thisSeq</span><span class="p">)</span>
+
+<span class="n">assert</span> <span class="n">thisSeq</span><span class="o">[</span><span class="mi">9</span><span class="o">]</span> <span class="o">==</span> <span class="mi">999</span></code></pre>
+
+<p>You can copy a sequence passed as “argument by value” and modify the copy:</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">doSomething</span><span class="p">(</span><span class="n">mySeq</span><span class="p">:</span> <span class="kt">seq</span><span class="o">[</span><span class="kt">int</span><span class="o">]</span><span class="p">)</span> <span class="o">=</span>
+  <span class="kd">var</span> <span class="n">varMySeq</span> <span class="o">=</span> <span class="n">mySeq</span>  <span class="c"># copy the seq</span>
+  <span class="n">varMySeq</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">999</span>
+  <span class="n">assert</span> <span class="n">varMySeq</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="mi">999</span>
+<span class="kd">var</span> <span class="n">testSeq</span> <span class="o">=</span> <span class="o">@[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="o">]</span>
+<span class="n">doSomething</span><span class="p">(</span><span class="n">testSeq</span><span class="p">)</span>
+<span class="n">assert</span> <span class="n">testSeq</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">==</span> <span class="mi">1</span></code></pre>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>

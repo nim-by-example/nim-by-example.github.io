@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['«', '»']]}});
+      MathJax.Hub.config.tex2jax.skipTags = ["script", "noscript", "style", "textarea", "annotation", "annotation-xml"];
+    </script>
+    <script async src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'></script>
+    <!-- Google Analytics -->
+    <script>
+      window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+      ga('create', 'UA-58002512-1', 'auto');
+      ga('set', 'anonymizeIp', true);
+      ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    <!-- End Google Analytics -->
+
+    <title>Nim by Example - Arrays</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="arrays">Arrays</h1>
+
+<p>The arrays in Nim are like classic C arrays, their size is specified at compile-time and cannot be given or changed at runtime.</p>
+
+<pre><code class="language-nimrod"><span class="k">type</span>
+  <span class="n">ThreeStringAddress</span> <span class="o">=</span> <span class="kt">array</span><span class="o">[</span><span class="mi">3</span><span class="p">,</span> <span class="kt">string</span><span class="o">]</span>
+<span class="k">let</span> <span class="n">names</span><span class="p">:</span> <span class="n">ThreeStringAddress</span> <span class="o">=</span> <span class="o">[</span><span class="s">"Jasmine"</span><span class="p">,</span> <span class="s">"Ktisztina"</span><span class="p">,</span> <span class="s">"Kristof"</span><span class="o">]</span>
+<span class="k">let</span> <span class="n">addresses</span><span class="p">:</span> <span class="n">ThreeStringAddress</span> <span class="o">=</span> <span class="o">[</span><span class="s">"101 Betburweg"</span><span class="p">,</span> <span class="s">"66 Bellion Drive"</span><span class="p">,</span> <span class="s">"194 Laarderweg"</span><span class="o">]</span></code></pre>
+
+<p>The size of the array is encoded in its type and cannot be accidentally lost. Therefore, a procedure taking an array of variable length must encode the length in its type parameters.</p>
+
+<pre><code class="language-nimrod"><span class="k">proc </span><span class="nf">zip</span><span class="o">[</span><span class="n">I</span><span class="p">,</span> <span class="n">T</span><span class="o">]</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="kt">array</span><span class="o">[</span><span class="n">I</span><span class="p">,</span> <span class="n">T</span><span class="o">]</span><span class="p">):</span>
+               <span class="kt">array</span><span class="o">[</span><span class="n">I</span><span class="p">,</span> <span class="k">tuple</span><span class="o">[</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">T</span><span class="o">]]</span> <span class="o">=</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">low</span><span class="p">(</span><span class="n">a</span><span class="p">)..</span><span class="n">high</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">result</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span> <span class="n">b</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">)</span>
+
+<span class="k">let</span> <span class="n">nameAndAddresses</span> <span class="o">=</span> <span class="n">names</span><span class="p">.</span><span class="n">zip</span><span class="p">(</span><span class="n">addresses</span><span class="p">)</span></code></pre>
+
+<p>Alternate methods of indexing arrays are also allowed, the first type parameter is actually a range (just a value, as above, is syntactic sugar for <code>0..N-1</code>). It’s also possible to use ordinal values to index an array, effectively creating a lookup table:</p>
+
+<pre><code class="language-nimrod"><span class="k">type</span>
+  <span class="n">PartsOfSpeech</span> <span class="p">{.</span><span class="n">pure</span><span class="p">.}</span> <span class="o">=</span> <span class="k">enum</span>
+    <span class="n">Pronoun</span><span class="p">,</span> <span class="n">Verb</span><span class="p">,</span> <span class="n">Article</span><span class="p">,</span> <span class="n">Adjective</span><span class="p">,</span> <span class="n">Noun</span><span class="p">,</span> <span class="n">Adverb</span>
+<span class="k">let</span> <span class="n">partOfSpeechExamples</span><span class="p">:</span> <span class="kt">array</span><span class="o">[</span><span class="n">PartsOfSpeech</span><span class="p">,</span> <span class="kt">string</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span>
+  <span class="s">"he"</span><span class="p">,</span> <span class="s">"reads"</span><span class="p">,</span> <span class="s">"the"</span><span class="p">,</span> <span class="s">"green"</span><span class="p">,</span> <span class="s">"book"</span><span class="p">,</span> <span class="s">"slowly"</span>
+<span class="o">]</span></code></pre>
+
+<pre><code class="language-nimrod"><span class="k">type</span>
+  <span class="n">Matrix</span><span class="o">[</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="k">static</span><span class="o">[</span><span class="kt">int</span><span class="o">]]</span> <span class="o">=</span>
+    <span class="kt">array</span><span class="o">[</span><span class="mf">1</span><span class="p">..</span><span class="n">W</span><span class="p">,</span> <span class="kt">array</span><span class="o">[</span><span class="mf">1</span><span class="p">..</span><span class="n">H</span><span class="p">,</span> <span class="kt">int</span><span class="o">]]</span>
+
+<span class="k">let</span> <span class="n">mat1</span><span class="p">:</span> <span class="n">Matrix</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="o">]</span><span class="p">,</span>
+                          <span class="o">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">]]</span>
+<span class="k">let</span> <span class="n">mat2</span><span class="p">:</span> <span class="n">Matrix</span><span class="o">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">]</span> <span class="o">=</span> <span class="o">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">]</span><span class="p">,</span>
+                          <span class="o">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="o">]]</span>
+
+<span class="k">proc </span><span class="nf">`+`</span><span class="o">[</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="o">]</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Matrix</span><span class="o">[</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="o">]</span><span class="p">):</span>
+               <span class="n">Matrix</span><span class="o">[</span><span class="n">W</span><span class="p">,</span> <span class="n">H</span><span class="o">]</span> <span class="o">=</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="mf">1</span><span class="p">..</span><span class="n">high</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="mf">1</span><span class="p">..</span><span class="n">high</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">):</span>
+      <span class="n">result</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span> <span class="o">+</span> <span class="n">b</span><span class="o">[</span><span class="n">i</span><span class="o">][</span><span class="n">j</span><span class="o">]</span>
+
+<span class="c"># See `$` from the procs section</span>
+
+<span class="n">echo</span> <span class="n">mat1</span> <span class="o">+</span> <span class="n">mat2</span></code></pre>
+
+<pre><code class="language-console"><span class="gp">$</span> nim c -r matrix.nim
+<span class="go">1, 1, </span>
+<span class="go">1, 1,</span></code></pre>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+  </body>
+</html>
