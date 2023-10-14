@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+
+    
+      <link rel="stylesheet" type="text/css" href="/assets/css/all.css">
+      <script async src="/assets/js/all.js"></script>
+    
+
+    <title>Nim by Example - String Formatting</title>
+    <link rel="icon" type="image/png" href="/assets/img/logo_bw.png">
+
+    <meta name="generator" content="nanoc 4.12.2">
+    <meta http-equiv="Default-Style" content="colorful">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+
+    <div id="sidebar">
+      <div class="abs-hamburger"><div class="nav-toggle" onclick="javascript:sidebarClick();"><span></span></div></div>
+      <nav>
+        <ul>
+  <li><a href="/getting_started/">Getting Started</a></li>
+  <li><a href="/hello_world/">Hello World</a></li>
+  <li><a href="/comments/">Comments</a></li>
+  <li><a href="/variables/">Variables</a>
+    <ul>
+      <li><a href="/variables/result/">Result</a></li>
+      <li><a href="/variables/type_casting_inference/">Type Casting and Inference</a></li>
+    </ul>
+  </li>
+  <li><a href="/if_else_while/">If, Else, While</a></li>
+  <li><a href="/case/">Case Statements</a></li>
+  <li><a href="/for_iterators/">For Loops &amp; Iterators</a></li>
+  <li><a href="/procs/">Procs</a></li>
+  <li><a href="/procvars/">First Class Functions</a></li>
+  <li><a href="/block/">Blocks</a></li>
+  <li><a href="/primitives/">Primitive Types</a></li>
+  <li><a href="/types/">Type Aliases</a></li>
+  <li><a href="/types/objects/">Object Types</a></li>
+  <li><a href="/types/enums/">Enum Types</a></li>
+  <li><a href="/types/distinct/">Distinct Types</a></li>
+  <li><a href="/strings/">Strings</a></li>
+  <li><a href="/arrays/">Arrays</a></li>
+  <li><a href="/seqs/">Seqs</a></li>
+  <li><a href="/bitsets/">Bitsets</a></li>
+  <li><a href="/files/">Files</a></li>
+  <li><a href="/json/">JSON</a></li>
+  <li><a href="/varargs/">Varargs</a></li>
+  <li><a href="/string_formatting/">String Formatting</a></li>
+  <li><a href="/oop/">Object Oriented Programming</a></li>
+  <li><a href="/parallelism/">Parallelism</a></li>
+  <li><a href="/channels/">Channels</a></li>
+  <li><a href="/concurrency/">Concurrency</a></li>
+  <li><a href="/macros/">Macros</a></li>
+</ul>
+
+
+
+      </nav>
+    </div>
+
+    <article>
+      <h1 id="string-formatting">String Formatting</h1>
+
+<p>The <code>&amp;</code> operator can be used for simple string concatenation:</p>
+
+<pre><code class="language-nim"><span class="k">let</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">"hello"</span> <span class="o">&amp;</span> <span class="s">"world"</span></code></pre>
+<p>The <code>strutils</code> module provides string interpolation from a format string using the <a href="https://nim-lang.org/docs/strutils.html#%25%2Cstring%2CopenArray%5Bstring%5D"><code>%</code> operator</a>.</p>
+
+<pre><code class="language-nim"><span class="kn">import</span> <span class="n">std</span><span class="o">/</span><span class="n">strutils</span>
+
+<span class="c"># numbered arguments</span>
+<span class="n">echo</span> <span class="s">"</span><span class="si">$1</span><span class="s"> </span><span class="si">$2</span><span class="s">"</span> <span class="o">%</span> <span class="o">[</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="o">]</span>
+<span class="c"># you can fetch the next argument using #</span>
+<span class="n">echo</span> <span class="s">"</span><span class="si">$#</span><span class="s"> </span><span class="si">$#</span><span class="s">"</span> <span class="o">%</span> <span class="o">[</span><span class="s">"hello"</span><span class="p">,</span> <span class="s">"world"</span><span class="o">]</span>
+<span class="c"># can support named arguments</span>
+<span class="n">echo</span> <span class="s">"</span><span class="si">$first</span><span class="s"> </span><span class="si">$second</span><span class="s">"</span> <span class="o">%</span> <span class="o">[</span><span class="s">"first"</span><span class="p">,</span> <span class="s">"hello"</span><span class="p">,</span> <span class="s">"second"</span><span class="p">,</span> <span class="s">"world"</span><span class="o">]</span></code></pre>
+
+<p>Alternatively, you can use the functionality provided by the <a href="https://nim-lang.org/docs/strformat.html"><code>strformat</code> module</a>.</p>
+
+<pre><code class="language-nim"><span class="kn">import</span> <span class="n">std</span><span class="o">/</span><span class="n">strformat</span>
+
+<span class="k">let</span>
+  <span class="n">h</span> <span class="o">=</span> <span class="s">"hello"</span>
+  <span class="n">w</span> <span class="o">=</span> <span class="s">"world"</span>
+
+<span class="n">echo</span> <span class="s">fmt"{h} {w}"</span>
+<span class="n">echo</span> <span class="o">&amp;</span><span class="s">"{h} {w}"</span></code></pre>
+<p>The <code>fmt</code> and <code>&amp;</code> operators have <a href="https://nim-lang.org/docs/strformat.html#nimfmt-vsdot-nimamp">a slight difference in usuage</a>: namely, the <code>fmt</code> operator results in a raw string literal which does not interpret escape sequences. Using the <code>&amp;</code> operator is the simplest way around this; other options are listed in the docs.</p>
+
+<h2 id="non-string-arguments">Non-string arguments</h2>
+
+<p>We have seen 3 different string formatting options above. How do you format non-string built-in types?</p>
+
+<pre><code class="language-nim"><span class="kn">import</span> <span class="n">std</span><span class="o">/</span><span class="n">strutils</span><span class="p">,</span> <span class="n">std</span><span class="o">/</span><span class="n">strformat</span>
+
+<span class="k">let</span> 
+  <span class="n">num</span> <span class="o">=</span> <span class="mi">42</span>
+
+<span class="c"># does not work</span>
+<span class="n">echo</span> <span class="s">"hello"</span> <span class="o">&amp;</span> <span class="n">num</span>
+<span class="c"># this does not work either</span>
+<span class="n">echo</span> <span class="s">"hello </span><span class="si">$1</span><span class="s">"</span> <span class="o">%</span> <span class="o">[</span><span class="n">num</span><span class="o">]</span>
+<span class="c"># this works fine</span>
+<span class="n">echo</span> <span class="o">&amp;</span><span class="s">"hello {num}"</span>
+
+<span class="c"># use the $ operator to convert to string</span>
+<span class="n">assert</span> <span class="o">$</span><span class="n">num</span> <span class="o">==</span> <span class="s">"42"</span>
+
+<span class="c"># these work now</span>
+<span class="n">echo</span> <span class="s">"hello"</span> <span class="o">&amp;</span> <span class="o">$</span><span class="n">num</span>
+<span class="n">echo</span> <span class="s">"hello </span><span class="si">$1</span><span class="s">"</span> <span class="o">%</span> <span class="o">[$</span><span class="n">num</span><span class="o">]</span></code></pre>
+
+<p>That is, the first two methods expect string arguments, the third works with any types. Refer to the <a href="https://nim-lang.org/docs/strformat.html#standard-format-specifiers-for-strings-integers-and-floats">docs for format specifiers</a> for alignments, integer and floating presentation types.</p>
+
+<h2 id="formatting-object-types">Formatting object types</h2>
+
+<p>The <code>$</code> operator is Nim’s version of the string or toString function. You can create string representations for object types as shown below.</p>
+
+<pre><code class="language-nim"><span class="kn">import</span> <span class="n">std</span><span class="o">/</span><span class="n">strutils</span><span class="p">,</span> <span class="n">std</span><span class="o">/</span><span class="n">strformat</span>
+
+<span class="k">type</span> <span class="n">Fruit</span> <span class="o">=</span> <span class="k">object</span>
+  <span class="n">name</span><span class="p">:</span> <span class="kt">string</span>
+  <span class="n">color</span><span class="p">:</span> <span class="kt">string</span>
+  
+<span class="k">proc </span><span class="nf">`$`</span><span class="p">(</span><span class="n">self</span><span class="p">:</span> <span class="n">Fruit</span><span class="p">):</span> <span class="kt">string</span> <span class="o">=</span>
+  <span class="o">&amp;</span><span class="s">"Fruit({self.name}, {self.color})"</span>
+  
+<span class="k">let</span> <span class="n">apple</span> <span class="o">=</span> <span class="n">Fruit</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="s">"apple"</span><span class="p">,</span> <span class="n">color</span><span class="p">:</span> <span class="s">"red"</span><span class="p">)</span>
+  
+<span class="n">echo</span> <span class="n">apple</span>  <span class="c"># Fruit("apple", "red")</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">apple</span> <span class="c"># Fruit("apple", "red")</span>
+
+<span class="n">echo</span> <span class="s">"hello "</span> <span class="o">&amp;</span> <span class="n">apple</span> <span class="c"># does not work, like before</span>
+<span class="n">echo</span> <span class="s">"hello "</span> <span class="o">&amp;</span> <span class="o">$</span><span class="n">apple</span> <span class="c"># hello Fruit("apple", "red")</span>
+
+<span class="n">echo</span> <span class="s">"hello </span><span class="si">$1</span><span class="s">"</span> <span class="o">%</span> <span class="o">[</span><span class="n">apple</span><span class="o">]</span> <span class="c"># does not work, like before</span>
+<span class="n">echo</span> <span class="s">"hello </span><span class="si">$1</span><span class="s">"</span> <span class="o">%</span> <span class="o">[$</span><span class="n">apple</span><span class="o">]</span> <span class="c"># hello Fruit("apple", "red")</span>
+
+<span class="c"># note the difference here</span>
+<span class="n">echo</span> <span class="o">&amp;</span><span class="s">"hello {apple}"</span> <span class="c"># hello (name: "apple", color: "red")</span>
+<span class="n">echo</span> <span class="o">&amp;</span><span class="s">"hello {</span><span class="si">$apple</span><span class="s">}"</span> <span class="c"># hello Fruit("apple", "red")</span></code></pre>
+
+<p>Note that the first line in the last section formats object types (and other types) using an in-built representation and you need to use the <code>$</code> operator—as in the second line of the last section—if you want to coerce it to a format of your choosing.</p>
+
+    </article>
+
+    <div id=nextprev>
+      <a id=arrow-prev class="text-icon disabled" href="https://please-enable-js/">↽</a>
+      <a id=arrow-next class="text-icon disabled" href="https://please-enable-js/">⇁</a>
+    </div>
+
+    <footer>
+      <li><a href="https://github.com/flaviut/nim-by-example">Contribute</a></li><li
+><a href="#" onclick="toggleDarkMode(); return false;">Toggle dark mode</a></li>
+
+    </footer>
+
+    <script data-goatcounter="https://wuosgy.goatcounter.com/count"> (function(){window.goatcounter=window.goatcounter||{};var f=document.querySelector("script[data-goatcounter]");if(f&&f.dataset.goatcounterSettings){try{var p=JSON.parse(f.dataset.goatcounterSettings)}catch(a){console.error("invalid JSON in data-goatcounter-settings: "+a)}for(var h in p)-1<"no_onload no_events allow_local allow_frame path title referrer event".split(" ").indexOf(h)&&(window.goatcounter[h]=p[h])}var q=encodeURIComponent,k=function(a){return null===a||void 0===a||"function"===typeof a}, l=function(a){console&&"warn"in console&&console.warn("goatcounter: "+a)};f=function(a){null===document.body?document.addEventListener("DOMContentLoaded",function(){a()},!1):a()};var t=function(a){a=a||{};var b=window,c=document;a={p:void 0===a.path?goatcounter.path:a.path,r:void 0===a.referrer?goatcounter.referrer:a.referrer,t:void 0===a.title?goatcounter.title:a.title,e:!(!a.event&&!goatcounter.event),s:[window.screen.width,window.screen.height,window.devicePixelRatio||1],b:b.callPhantom||b._phantom|| b.phantom?150:b.__nightmare?151:c.__selenium_unwrapped||c.__webdriver_evaluate||c.__driver_evaluate?152:navigator.webdriver?153:0,q:location.search};if("function"===typeof a.r)var d=a.r;if("function"===typeof a.t)var r=a.t;if("function"===typeof a.p)var g=a.p;k(a.r)&&(a.r=document.referrer);k(a.t)&&(a.t=document.title);if(k(a.p)){b=location;if(c=document.querySelector('link[rel="canonical"][href]')){var m=document.createElement("a");m.href=c.href;m.hostname.replace(/^www\./,"")===location.hostname.replace(/^www\./, "")&&(b=m)}a.p=b.pathname+b.search||"/"}d&&(a.r=d(a.r));r&&(a.t=r(a.t));g&&(a.p=g(a.p));if(null!==a.p){a.rnd=Math.random().toString(36).substr(2,5);d=(d=document.querySelector("script[data-goatcounter]"))&&d.dataset.goatcounter?d.dataset.goatcounter:goatcounter.endpoint||window.counter;if(!d)return l("no endpoint found");g=[];for(e in a)""!==a[e]&&null!==a[e]&&void 0!==a[e]&&!1!==a[e]&&g.push(q(e)+"="+q(a[e]));var e="?"+g.join("&");return d+e}},n=function(a){var b="visibilityState"in document&&"prerender"=== document.visibilityState?"visibilityState":goatcounter.allow_frame||location===parent.location?!goatcounter.allow_local&&location.hostname.match(/(localhost$|^127\.|^10\.|^172\.(1[6-9]|2[0-9]|3[0-1])\.|^192\.168\.|^0\.0\.0\.0$)/)?"localhost":goatcounter.allow_local||"file:"!==location.protocol?localStorage&&"t"===localStorage.getItem("skipgc")?"disabled with #toggle-goatcounter":!1:"localfile":"frame";if(b)return l("not counting because of: "+b);a=t(a);if(!a)return l("not counting because path callback returned null"); var c=document.createElement("img");c.src=a;c.style.position="absolute";c.style.bottom="0px";c.style.width="1px";c.style.height="1px";c.loading="eager";c.setAttribute("alt","");c.setAttribute("aria-hidden","true");c.addEventListener("load",function(){c&&c.parentNode&&c.parentNode.removeChild(c)},!1);document.body.appendChild(c)},u=function(){if(document.querySelectorAll){var a=function(b){return function(){n({event:!0,path:b.dataset.goatcounterClick||b.name||b.id||"",title:b.dataset.goatcounterTitle|| b.title||(b.innerHTML||"").substr(0,200)||"",referrer:b.dataset.goatcounterReferrer||b.dataset.goatcounterReferral||""})}};Array.prototype.slice.call(document.querySelectorAll("*[data-goatcounter-click]")).forEach(function(b){if(!b.dataset.goatcounterBound){var c=a(b);b.addEventListener("click",c,!1);b.addEventListener("auxclick",c,!1);b.dataset.goatcounterBound="true"}})}};"#toggle-goatcounter"===location.hash&&("t"===localStorage.getItem("skipgc")?localStorage.removeItem("skipgc","t"):localStorage.setItem("skipgc", "t"));goatcounter.no_onload||f(function(){if("visibilityState"in document&&"visible"!==document.visibilityState){var a=function(b){"visible"===document.visibilityState&&(document.removeEventListener("visibilitychange",a),n())};document.addEventListener("visibilitychange",a)}else n();goatcounter.no_events||u()})})();</script>
+  </body>
+</html>
